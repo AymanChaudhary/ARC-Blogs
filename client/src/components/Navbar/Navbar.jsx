@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoReorderThreeSharp } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 const Navbar = () => {
   const links = [
@@ -52,12 +53,33 @@ const Navbar = () => {
         </button>
       </div>
       <div
-        className={`absolute top-0 left-0 nav-bg h-screen w-full ${
-          MobileNav
-            ? "flex flex-col translate-y-[0%]"
-            : "translate-y-[-100%]"
+        className={`fixed top-0 left-0 nav-bg h-screen w-full backdrop-blur-md p-8 ${
+          MobileNav ? "flex flex-col translate-y-[0%]" : "translate-y-[-100%]"
         } transition-all duration-300 z-10 p-4`}
-      ></div>
+      >
+        <div className="w-full flex justify-end">
+          <button className="text-3xl" onClick={() => setMobileNav(!MobileNav)}>
+            <RxCross2 />
+          </button>
+        </div>
+        <div className="h-[100%] flex flex-col items-center justify-center">
+          {links.map((items, i) => (
+            <Link
+              className="mb-8 text-4xl hover:text-blue-600 transition-all duration-300"
+              key={i}
+              to={items.to}
+            >
+              {items.name}
+            </Link>
+          ))}
+          <Link
+            className="text-4xl bg-black rounded px-8 py-4 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
+            to="/signup"
+          >
+            Sign Up
+          </Link>
+        </div>
+      </div>
     </nav>
   );
 };

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="h-screen flex items-center justify-center flex-col">
+    <div className="my-4 flex items-center justify-center flex-col">
       <div className="text-4xl flex flex-col w-full items-start">
         <h1 className="font-bold">Hi I am ARC!</h1>
         <h2>Discover new blogs of technology and trends!</h2>
