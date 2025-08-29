@@ -1,17 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 const DashBoardProfile = () => {
+  const [ChangeAvatar, setChangeAvatar] = useState(null);
+  const changeImage = (e) => {
+    setChangeAvatar(e.target.files[0]);
+  };
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-12">
         <div>
           <div className="size-[20vh] border rounded-full">
-            <div className="w-[100%] h-[100%] flex items-center justify-center">
-              <FaUser className="size-[12vh] text-zinc-600" />
-            </div>
+            <label
+              className="w-[100%] h-[100%] flex items-center justify-center"
+              htmlFor="imgFile"
+            >
+              {ChangeAvatar ? (
+                <img
+                  src={URL.createObjectURL(ChangeAvatar)}
+                  alt=""
+                  className="size-[100%] object-cover"
+                ></img>
+              ) : (
+                <FaUser className="size-[12vh] text-zinc-600" />
+              )}
+            </label>
           </div>
           <div className="mt-4">
+            <input
+              type="file"
+              id="imgFile"
+              accept=".jpeg, .jpg, .png"
+              className="mb-4 bg-zinc-900 text-white hidden"
+              onChange={changeImage}
+            />
             <button className="bg-blue-700 text-center px-4 py-2 text-white rounded cursor-pointer">
               Change Avatar
             </button>
@@ -19,10 +41,19 @@ const DashBoardProfile = () => {
         </div>
         <div>
           <p className="text-zinc-700">aymanchaudhary96@gmail.com</p>
-          <h1 className="text-3xl mt-2 font-semibold">Ayman Chaudhary</h1>
+          <h1 className="text-5xl mt-2 font-semibold">Ayman Chaudhary</h1>
         </div>
       </div>
-      <div></div>
+      <hr className="my-8" />
+      <div>
+        <h1 className="text-2xl font-semibold">Change account's Password</h1>
+        <form className="my-4">
+          <div className="flex flex-col">
+            <label htmlFor="">Current Password</label>
+            <input type="password" placeholder="Current Password" />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
