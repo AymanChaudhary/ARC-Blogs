@@ -17,12 +17,12 @@ const SideBar = () => {
     },
   ];
   return (
-    <div className="w-[100%] border-r flex flex-col gap-4 pr-4">
+    <div className="w-[100%] flex flex-col gap-10 md:gap-8 lg:gap-4 pr-4">
       {sideBarLinks.map((items, i) => (
           <Link
             key={i}
             to={items.to}
-            className="text-sm text-gray-700 hover:font-semibold"
+            className="hover:font-semibold"
           >
             {items.name}
           </Link>
