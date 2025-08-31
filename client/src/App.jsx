@@ -11,6 +11,10 @@ import AllBlogs from '../src/Pages/All Blogs/page'
 import DashBoardProfile from './components/Profile/DashBoardProfile'
 import Favourites from './components/Profile/Favourites'
 import LikedBlogs from './components/Profile/LikedBlogs'
+import Description from './Pages/Description/Description'
+import Categories from './Pages/Categories/Categories'
+import AdminLogin from './Pages/Admin Login/AdminLogin'
+import AdminDashboard from './Pages/Admin Dashboard/page'
 
 const App = () => {
   return (
@@ -19,15 +23,19 @@ const App = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="/all-blogs" element={<AllBlogs />} />
+          <Route path="/description/:id" element={<Description />} />
+          <Route path="/cat/:id" element={<Categories />} />
           <Route path="/profile" element={<Profile />}>
             <Route index element={<DashBoardProfile />} />
-            <Route path='/profile/favourites' element={<Favourites />} />
-            <Route path='/profile/liked-blogs' element={<LikedBlogs />} />
+            <Route path="/profile/favourites" element={<Favourites />} />
+            <Route path="/profile/liked-blogs" element={<LikedBlogs />} />
           </Route>
         </Route>
         <Route element={<OtherLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </Router>
