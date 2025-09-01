@@ -1,5 +1,4 @@
 import React from 'react'
-import BlogCard from '../../components/Blog Card/BlogCard';
 import AllBlogsComponents from '../../components/All Blogs/AllBlogsComponents';
 
 const AllBlogs = () => {

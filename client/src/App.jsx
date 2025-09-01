@@ -15,6 +15,9 @@ import Description from './Pages/Description/Description'
 import Categories from './Pages/Categories/Categories'
 import AdminLogin from './Pages/Admin Login/AdminLogin'
 import AdminDashboard from './Pages/Admin Dashboard/page'
+import DashBoard from './components/Admin Components/Dashboard/DashBoard'
+import AddBlogs from './components/Admin Components/Add Blog/AddBlogs'
+import EditBlogs from './components/Admin Components/Edit Blog/EditBlogs'
 
 const App = () => {
   return (
@@ -35,7 +38,11 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />}>
+            <Route index element={<DashBoard />} />
+            <Route path='/admin-dashboard/add-blogs' element={<AddBlogs />} />
+            <Route path='/admin-dashboard/edit-blogs' element={<EditBlogs />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

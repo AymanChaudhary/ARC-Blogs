@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const BlogCard = ({ items }) => {
   return (
     <>
-      <div className="w-full lg:w-4/6">
+      <div className="w-full lg:w-2/6">
         <img src={items.img} alt="" className="rounded object-cover" />
       </div>
       <div className="w-full lg:w-4/6">
