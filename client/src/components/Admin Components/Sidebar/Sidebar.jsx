@@ -12,11 +12,14 @@ const Sidebar = () => {
       <h1 className="text-2xl font-semibold">Admin Page</h1>
       <hr className="my-4" />
       <div className="flex flex-col gap-4">
-      {links.map((items, i) => (
-          <Link className="text-xl hover:scale-105 transition-all duration-300" to={items.to} key={i}>
-            {items.name}
-          </Link>
-      ))}
+        {links.map((items, i) => (
+            <Link className="text-xl hover:scale-105 transition-all duration-300" to={items.to} key={i}>
+              {items.name}
+            </Link>
+        ))}
+      </div>
+      <div>
+        <button className="mt-5 bg-black text-white px-4 py-2 w-[100%] rounded cursor-pointer">Log out</button>
       </div>
     </div>
   );
