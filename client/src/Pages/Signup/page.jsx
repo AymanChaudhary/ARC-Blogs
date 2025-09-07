@@ -1,12 +1,35 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const SignUp = () => {
-  const [Inputs, setInputs] = useState({username:"", email:"", password:""});
+  const history = useNavigate();
+  const [Inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const change = (e) => {
-    const {name, value} = e.target;
-    setInputs({...Inputs, [name]: value});
-  }
+    const { name, value } = e.target;
+    setInputs({ ...Inputs, [name]: value });
+  };
+  const SubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:1000/api/v1/sign-up",
+        Inputs,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      history("/login");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    } finally {
+      setInputs({ username: "", email: "", password: "" });
+    }
+  };
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="p-12 shadow-2xl rounded w-[80%] md:w-[60%] lg:w-[40%] flex flex-col items-center justify-center">
@@ -14,7 +37,7 @@ const SignUp = () => {
           <h1 className="font-bold">Welcome!</h1>
           <span>Sign up as a new user</span>
         </div>
-        <form className="flex flex-col w-[100%] mt-8">
+        <form className="flex flex-col w-[100%] mt-8" onSubmit={SubmitHandler}>
           <div className="flex flex-col mb-4">
             <label>Username</label>
             <input
@@ -57,7 +80,7 @@ const SignUp = () => {
             </button>
           </div>
         </form>
-        <h4 className='mt-8'>
+        <h4 className="mt-8">
           Already have an account?{" "}
           <Link
             to="/login"
@@ -69,6 +92,6 @@ const SignUp = () => {
       </div>
     </div>
   );
-}
+};
 
-export default SignUp
+export default SignUp;

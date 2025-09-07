@@ -19,10 +19,13 @@ import DashBoard from './components/Admin Components/Dashboard/DashBoard'
 import AddBlogs from './components/Admin Components/Add Blog/AddBlogs'
 import EditBlogs from './components/Admin Components/Edit Blog/EditBlogs'
 import UpdateBlog from './components/Admin Components/Edit Blog/Compo/UpdateBlog'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
 
 const App = () => {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />

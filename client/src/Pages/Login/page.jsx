@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
+  const history = useNavigate();
   const [Inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -10,6 +13,22 @@ const Login = () => {
     const { name, value } = e.target;
     setInputs({ ...Inputs, [name]: value });
   };
+  const SubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:1000/api/v1/log-in",
+        Inputs,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      history("/profile");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    } finally {
+      setInputs({ email: "", password: "" });
+    }
+  };
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="p-12 shadow-2xl rounded w-[80%] md:w-[60%] lg:w-[40%] flex flex-col items-center justify-center">
@@ -17,7 +36,7 @@ const Login = () => {
           <h1 className="font-bold">Welcome Again!</h1>
           <span>Please log in here</span>
         </div>
-        <form className="flex flex-col w-[100%] mt-8">
+        <form className="flex flex-col w-[100%] mt-8" onSubmit={SubmitHandler}>
           <div className="flex flex-col mb-4">
             <label>Email</label>
             <input
