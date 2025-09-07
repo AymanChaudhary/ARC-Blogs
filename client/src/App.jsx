@@ -24,7 +24,7 @@ import { ToastContainer } from 'react-toastify'
 
 const App = () => {
   return (
-    <Router>
+    <>
       <ToastContainer />
       <Routes>
         <Route path="/" element={<MainLayout />}>
@@ -50,7 +50,7 @@ const App = () => {
           </Route>
         </Route>
       </Routes>
-    </Router>
+    </>
   );
 }
 

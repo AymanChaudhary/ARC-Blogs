@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoReorderThreeSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const links = [
@@ -22,6 +23,12 @@ const Navbar = () => {
       to: "/login",
     },
   ];
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  if (!isLoggedIn){
+    links.splice(2,1);
+  }else{
+    links.splice(3,1);
+  }
   const [MobileNav, setMobileNav] = useState(false);
   return (
     <nav className="relative flex items-center justify-between py-4 border-b border-zinc-200">
@@ -40,12 +47,14 @@ const Navbar = () => {
             {items.name}
           </Link>
         ))}
-        <Link
-          className="ms-4 bg-black rounded px-4 py-1 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
-          to="/signup"
-        >
-          Sign Up
-        </Link>
+        {!isLoggedIn && (
+          <Link
+            className="ms-4 bg-black rounded px-4 py-1 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
+            to="/signup"
+          >
+            Sign Up
+          </Link>
+        )}
       </div>
       <div className="w-3/6 flex lg:hidden items-center justify-end">
         <button className="text-3xl" onClick={() => setMobileNav(!MobileNav)}>
@@ -72,12 +81,14 @@ const Navbar = () => {
               {items.name}
             </Link>
           ))}
-          <Link
-            className="text-4xl bg-black rounded px-8 py-4 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
-            to="/signup"
-          >
-            Sign Up
-          </Link>
+          {!isLoggedIn && (
+            <Link
+              className="ms-4 text-4xl bg-black rounded px-8 py-4 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
+              to="/signup"
+            >
+              Sign Up
+            </Link>
+          )}
         </div>
       </div>
     </nav>

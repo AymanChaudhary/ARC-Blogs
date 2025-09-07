@@ -87,3 +87,19 @@ exports.loginUser = async (req, res) => {
       .json({ success: false, error: "Internal Server Error" });
   }
 };
+
+//check cookie
+exports.checkCookie = async(req, res) => {
+  try {
+    const token = req.cookies.BlogsToken;
+    if (token){
+      return res.status(200).json({ message: true });
+    }
+    return res.status(200).json({ message: false });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+}

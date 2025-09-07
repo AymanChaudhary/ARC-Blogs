@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const SignUp = () => {
   const history = useNavigate();
+  const backendLink = useSelector((state) => state.prod.link);
   const [Inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -18,7 +20,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:1000/api/v1/sign-up",
+        `${backendLink}/api/v1/sign-up`,
         Inputs,
         { withCredentials: true }
       );

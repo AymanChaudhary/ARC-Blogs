@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/authReducer";
 import axios from "axios";
 
 const Login = () => {
   const history = useNavigate();
+  const backendLink = useSelector((state) => state.prod.link);
+  const dispatch = useDispatch();
   const [Inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -17,10 +21,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:1000/api/v1/log-in",
+        `${backendLink}/api/v1/log-in`,
         Inputs,
         { withCredentials: true }
       );
+      dispatch(authActions.login());
       toast.success(res.data.message);
       history("/profile");
     } catch (error) {
