@@ -73,7 +73,7 @@ exports.loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       secure: true,
-      sameSite: "None"
+      sameSite: "None",
     });
     return res.status(200).json({
       success: true,
@@ -89,17 +89,27 @@ exports.loginUser = async (req, res) => {
 };
 
 //check cookie
-exports.checkCookie = async(req, res) => {
+exports.checkCookie = async (req, res) => {
   try {
     const token = req.cookies.BlogsToken;
-    if (token){
+    if (token) {
       return res.status(200).json({ message: true });
     }
     return res.status(200).json({ message: false });
   } catch (error) {
-    console.error(error);
     return res
       .status(500)
       .json({ success: false, error: "Internal Server Error" });
   }
-}
+};
+
+//log out
+exports.logout = (req, res) => {
+  res.clearCookie("BlogsToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/"
+  });
+  res.json({ message: "Logged out successfully" });
+};

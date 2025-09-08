@@ -1,28 +1,45 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import MainLayout from './Layout/MainLayout'
-import Home from './Pages/Home/page'
-import OtherLayout from './Layout/OtherLayout'
-import Login from './Pages/Login/page'
-import SignUp from './Pages/Signup/page'
-import Profile from './Pages/Profile/page'
-import AllBlogs from '../src/Pages/All Blogs/page'
-import DashBoardProfile from './components/Profile/DashBoardProfile'
-import Favourites from './components/Profile/Favourites'
-import LikedBlogs from './components/Profile/LikedBlogs'
-import Description from './Pages/Description/Description'
-import Categories from './Pages/Categories/Categories'
-import AdminLogin from './Pages/Admin Login/AdminLogin'
-import AdminDashboard from './Pages/Admin Dashboard/page'
-import DashBoard from './components/Admin Components/Dashboard/DashBoard'
-import AddBlogs from './components/Admin Components/Add Blog/AddBlogs'
-import EditBlogs from './components/Admin Components/Edit Blog/EditBlogs'
-import UpdateBlog from './components/Admin Components/Edit Blog/Compo/UpdateBlog'
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify'
+import MainLayout from "./Layout/MainLayout";
+import Home from "./Pages/Home/page";
+import OtherLayout from "./Layout/OtherLayout";
+import Login from "./Pages/Login/page";
+import SignUp from "./Pages/Signup/page";
+import Profile from "./Pages/Profile/page";
+import AllBlogs from "../src/Pages/All Blogs/page";
+import DashBoardProfile from "./components/Profile/DashBoardProfile";
+import Favourites from "./components/Profile/Favourites";
+import LikedBlogs from "./components/Profile/LikedBlogs";
+import Description from "./Pages/Description/Description";
+import Categories from "./Pages/Categories/Categories";
+import AdminLogin from "./Pages/Admin Login/AdminLogin";
+import AdminDashboard from "./Pages/Admin Dashboard/page";
+import DashBoard from "./components/Admin Components/Dashboard/DashBoard";
+import AddBlogs from "./components/Admin Components/Add Blog/AddBlogs";
+import EditBlogs from "./components/Admin Components/Edit Blog/EditBlogs";
+import UpdateBlog from "./components/Admin Components/Edit Blog/Compo/UpdateBlog";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "./store/authReducer";
+import axios from "axios";
 
 const App = () => {
+  const backendLink = useSelector((state) => state.prod.link);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get(`${backendLink}/api/v1/check-cookie`, {
+        withCredentials: true,
+      });
+      if (res.data.message === true){
+        dispatch(authActions.login());
+      }
+    };
+    fetch();
+  }, []);
+
   return (
     <>
       <ToastContainer />
@@ -44,14 +61,17 @@ const App = () => {
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />}>
             <Route index element={<DashBoard />} />
-            <Route path='/admin-dashboard/add-blogs' element={<AddBlogs />} />
-            <Route path='/admin-dashboard/edit-blogs' element={<EditBlogs />} />
-            <Route path='/admin-dashboard/update-blog/:id' element={<UpdateBlog />} />
+            <Route path="/admin-dashboard/add-blogs" element={<AddBlogs />} />
+            <Route path="/admin-dashboard/edit-blogs" element={<EditBlogs />} />
+            <Route
+              path="/admin-dashboard/update-blog/:id"
+              element={<UpdateBlog />}
+            />
           </Route>
         </Route>
       </Routes>
     </>
   );
-}
+};
 
-export default App
+export default App;
