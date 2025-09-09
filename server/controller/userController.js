@@ -109,7 +109,45 @@ exports.logout = (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    path: "/"
+    path: "/",
   });
   res.json({ message: "Logged out successfully" });
+};
+
+//get profile data
+exports.getProfileData = async (req, res) => {
+  try {
+    const { user } = req;
+    const { password, ...safeUserData } = user._doc;
+    return res.status(200).json({ data: safeUserData });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+};
+
+//change user password
+exports.changeUserPassword = async (req, res) => {
+  try {
+    const { user } = req;
+    const { password, newPass, confirmNewPass } = req.body;
+    if (newPass !== confirmNewPass) {
+      return res.status(400).json({ error: "Please match the passwords" });
+    }
+    const Actualpassword = user.password;
+    const checkPass = await bcrypt.compare(password, Actualpassword);
+    if (!checkPass) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Incorrect password" });
+    }
+    user.password = await bcrypt.hash(confirmNewPass, 10);
+    await user.save();
+    return res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
 };
