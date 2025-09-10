@@ -42,6 +42,8 @@ const DashBoardProfile = () => {
         { withCredentials: true }
       );
       toast.success(res.data.message);
+      //note: This is working perfectly fine, do not try to comment the below line
+      setChangeAvatar(null);
       setPasswords({ password: "", newPass: "", confirmNewPass: "" });
     } catch (error) {
       toast.error(error.response.data.error);
@@ -59,7 +61,8 @@ const DashBoardProfile = () => {
         { withCredentials: true }
       );
       toast.success(res.data.message);
-      setChangeAvatar(null);
+      //note: it is working but the response is very slow if you uncomment the below line
+      // setChangeAvatar(null);
     } catch (error) {
       toast.error(error.response.data.error);
     }
