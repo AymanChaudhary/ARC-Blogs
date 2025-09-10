@@ -151,3 +151,21 @@ exports.changeUserPassword = async (req, res) => {
       .json({ success: false, error: "Internal Server Error" });
   }
 };
+
+//change avatar
+exports.changeAvatar = async (req, res) => {
+  try {
+    const { user } = req;
+    if (!req.file){
+      return res.status(400).json({ error: "Please upload an image" });
+    }
+    user.avatar = req.file.path;
+    await user.save();
+    return res.status(200).json({ message: "Avatar updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+};

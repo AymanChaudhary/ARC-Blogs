@@ -29,20 +29,41 @@ const DashBoardProfile = () => {
   });
 
   const changePass = (e) => {
-    const {name, value} = e.target;
-    setPasswords({...Passwords, [name]: value});
-  }
+    const { name, value } = e.target;
+    setPasswords({ ...Passwords, [name]: value });
+  };
 
-  const handlePass = async(e) => {
+  const handlePass = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.patch(`${backendLink}/api/v1/changeUserPassword`, Passwords, {withCredentials: true});
+      const res = await axios.patch(
+        `${backendLink}/api/v1/changeUserPassword`,
+        Passwords,
+        { withCredentials: true }
+      );
       toast.success(res.data.message);
-      setPasswords({password: "", newPass: "", confirmNewPass: ""});
+      setPasswords({ password: "", newPass: "", confirmNewPass: "" });
     } catch (error) {
       toast.error(error.response.data.error);
     }
-  }
+  };
+
+  const updateAvatar = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("image", ChangeAvatar);
+      const res = await axios.put(
+        `${backendLink}/api/v1/changeAvatar`,
+        formData,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      setChangeAvatar(null);
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
   return (
     <>
       {UserData && (
@@ -54,11 +75,15 @@ const DashBoardProfile = () => {
                   className="w-[100%] h-[100%] flex items-center justify-center"
                   htmlFor="imgFile"
                 >
-                  {ChangeAvatar ? (
+                  {UserData && UserData.avatar ? (
                     <img
-                      src={URL.createObjectURL(ChangeAvatar)}
+                      src={
+                        ChangeAvatar
+                          ? URL.createObjectURL(ChangeAvatar)
+                          : `${UserData.avatar}`
+                      }
                       alt=""
-                      className="size-[100%] object-cover"
+                      className="size-[100%] rounded-full object-cover"
                     ></img>
                   ) : (
                     <FaUser className="size-[12vh] text-zinc-600" />
@@ -73,7 +98,10 @@ const DashBoardProfile = () => {
                   className="mb-4 bg-zinc-900 text-white hidden"
                   onChange={changeImage}
                 />
-                <button className="bg-blue-700 hover:bg-blue-600 transition-all duration-300 text-center px-4 py-2 text-white rounded cursor-pointer">
+                <button
+                  className="bg-blue-700 hover:bg-blue-600 transition-all duration-300 text-center px-4 py-2 text-white rounded cursor-pointer"
+                  onClick={updateAvatar}
+                >
                   Change Avatar
                 </button>
               </div>
