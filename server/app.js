@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
 require('./conn/conn');
-const userApi = require('./routes/user')
+const userApi = require('./routes/user');
+const adminApi = require('./routes/admin');
 
 app.use(cors({
     origin: ['http://localhost:5173'],
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/v1', userApi);
+app.use('/api/v1', adminApi);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);

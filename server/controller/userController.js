@@ -81,7 +81,7 @@ exports.loginUser = async (req, res) => {
       data: existingUser,
     });
   } catch (error) {
-    console.error("Error in loginUser:", error);
+    //console.error("Error in loginUser:", error);
     return res
       .status(500)
       .json({ success: false, error: "Internal Server Error" });
