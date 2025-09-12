@@ -10,6 +10,7 @@ const AddBlogs = () => {
   const [Description, setDescription] = useState("");
   const [Image, setImage] = useState(null);
   const [Loading, setLoading] = useState(false);
+  const [NewCategory, setNewCategory] = useState("");
 
   const handleAddBlog = async (e) => {
     e.preventDefault();
@@ -31,6 +32,15 @@ const AddBlogs = () => {
       setLoading(false);
     }
   };
+
+  const addCategoryHandle = async(e) => {
+    e.preventDefault();
+    const res = await axios.post(`${backendLink}/api/v1/addCategory`, {title: NewCategory}, {
+      withCredentials: true,
+    });
+    toast.success(res.data.message);
+    setNewCategory("");
+  }
 
   return (
     <div className="p-4 h-screen">
@@ -68,6 +78,18 @@ const AddBlogs = () => {
             </button>
           )}
         </div>
+      </form>
+      <h1 className="text-2xl font-semibold mt-8">Add New Category</h1>
+      <form className="mt-4" onSubmit={addCategoryHandle}>
+        <input
+          type="text"
+          placeholder="Your new category"
+          className="bg-none border outline-none px-4 py-2 rounded bg-gray-50"
+          required
+          value={NewCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+        />
+        <button className="ms-4 bg-blue-600 px-4 py-2 rounded text-white cursor-pointer">Add Category</button>
       </form>
     </div>
   );
