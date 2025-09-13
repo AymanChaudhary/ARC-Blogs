@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Blog = require("../models/blog");
+const Cat = require("../models/category");
 
 exports.adminLogin = async (req, res) => {
   try {
@@ -57,8 +58,8 @@ exports.adminLogin = async (req, res) => {
 //add blog
 exports.addBlog = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    if (!title || !description) {
+    const { title, description, category } = req.body;
+    if (!title || !description || !category) {
       return res
         .status(400)
         .json({ success: false, error: "All fields are required" });
@@ -66,8 +67,14 @@ exports.addBlog = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "Please upload an image" });
     }
+    const existingCat = await Cat.findOne({ title: category });
+    if (!existingCat) {
+      return res.status(400).json({ error: "Category does not exist" });
+    }
     const newBlog = new Blog({ title, description, image: req.file.path });
     await newBlog.save();
+    existingCat.blogs.push(newBlog._id);
+    await existingCat.save();
     return res.status(200).json({ message: "Blog added successfully" });
   } catch (error) {
     return res

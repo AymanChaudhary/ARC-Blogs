@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -11,6 +11,8 @@ const AddBlogs = () => {
   const [Image, setImage] = useState(null);
   const [Loading, setLoading] = useState(false);
   const [NewCategory, setNewCategory] = useState("");
+  const [ActualCategories, setActualCategories] = useState();
+  const [CategoryId, setCategoryId] = useState();
 
   const handleAddBlog = async (e) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ const AddBlogs = () => {
       const form = new FormData();
       form.append("title", Title);
       form.append("description", Description);
+      form.append("category", CategoryId);
       form.append("image", Image);
       const res = await axios.post(`${backendLink}/api/v1/addBlog`, form, {
         withCredentials: true,
@@ -30,17 +33,32 @@ const AddBlogs = () => {
       setTitle("");
       setDescription("");
       setLoading(false);
+      setCategoryId("");
     }
   };
 
-  const addCategoryHandle = async(e) => {
+  const addCategoryHandle = async (e) => {
     e.preventDefault();
-    const res = await axios.post(`${backendLink}/api/v1/addCategory`, {title: NewCategory}, {
-      withCredentials: true,
-    });
+    const res = await axios.post(
+      `${backendLink}/api/v1/addCategory`,
+      { title: NewCategory },
+      {
+        withCredentials: true,
+      }
+    );
     toast.success(res.data.message);
     setNewCategory("");
-  }
+  };
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get(`${backendLink}/api/v1/getCategory`, {
+        withCredentials: true,
+      });
+      setActualCategories(res.data.categories);
+    };
+    fetch();
+  }, [backendLink]);
 
   return (
     <div className="p-4 h-screen">
@@ -59,13 +77,27 @@ const AddBlogs = () => {
           value={Description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <div>
+        <div className="flex items-center justify-between">
           <input
             type="file"
             className="bg-zinc-900 rounded text-white"
             accept=".jpeg, .png, .jpg"
             onChange={(e) => setImage(e.target.files[0])}
           />
+          <select
+            name="title"
+            id=""
+            className="px-4 py-2 rounded shadow"
+            onChange={(e) => setCategoryId(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            {ActualCategories &&
+              ActualCategories.map((items, i) => (
+                <option value={items.title} key={i}>
+                  {items.title}
+                </option>
+              ))}
+          </select>
         </div>
         <div>
           {Loading ? (
@@ -89,7 +121,9 @@ const AddBlogs = () => {
           value={NewCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
-        <button className="ms-4 bg-blue-600 px-4 py-2 rounded text-white cursor-pointer">Add Category</button>
+        <button className="ms-4 bg-blue-600 px-4 py-2 rounded text-white cursor-pointer">
+          Add Category
+        </button>
       </form>
     </div>
   );

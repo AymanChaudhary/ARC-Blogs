@@ -9,4 +9,6 @@ router.post(
   categoryController.addCategory
 );
 
+router.get("/getCategory", categoryController.getCategories);
+
 module.exports = router;
